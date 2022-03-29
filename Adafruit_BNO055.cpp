@@ -384,52 +384,9 @@ imu::Vector<3> Adafruit_BNO055::getVector(adafruit_vector_type_t vector_type) {
   /* Read vector data (6 bytes) */
   readLen((adafruit_bno055_reg_t)vector_type, buffer, 6);
 
-  x = ((int16_t)buffer[0]) | (((int16_t)buffer[1]) << 8);
-  y = ((int16_t)buffer[2]) | (((int16_t)buffer[3]) << 8);
-  z = ((int16_t)buffer[4]) | (((int16_t)buffer[5]) << 8);
-
-  /*!
-   * Convert the value to an appropriate range (section 3.6.4)
-   * and assign the value to the Vector type
-   */
-  switch (vector_type) {
-  case VECTOR_MAGNETOMETER:
-    /* 1uT = 16 LSB */
-    xyz[0] = ((double)x) / 16.0;
-    xyz[1] = ((double)y) / 16.0;
-    xyz[2] = ((double)z) / 16.0;
-    break;
-  case VECTOR_GYROSCOPE:
-    /* 1dps = 16 LSB */
-    xyz[0] = ((double)x) / 16.0;
-    xyz[1] = ((double)y) / 16.0;
-    xyz[2] = ((double)z) / 16.0;
-    break;
-  case VECTOR_EULER:
-    /* 1 degree = 16 LSB */
-    xyz[0] = ((double)x) / 16.0;
-    xyz[1] = ((double)y) / 16.0;
-    xyz[2] = ((double)z) / 16.0;
-    break;
-  case VECTOR_ACCELEROMETER:
-    /* 1m/s^2 = 100 LSB */
-    xyz[0] = ((double)x) / 100.0;
-    xyz[1] = ((double)y) / 100.0;
-    xyz[2] = ((double)z) / 100.0;
-    break;
-  case VECTOR_LINEARACCEL:
-    /* 1m/s^2 = 100 LSB */
-    xyz[0] = ((double)x) / 100.0;
-    xyz[1] = ((double)y) / 100.0;
-    xyz[2] = ((double)z) / 100.0;
-    break;
-  case VECTOR_GRAVITY:
-    /* 1m/s^2 = 100 LSB */
-    xyz[0] = ((double)x) / 100.0;
-    xyz[1] = ((double)y) / 100.0;
-    xyz[2] = ((double)z) / 100.0;
-    break;
-  }
+  xyz[0] = ((int16_t)buffer[0]) | (((int16_t)buffer[1]) << 8);
+  xyz[0] = ((int16_t)buffer[2]) | (((int16_t)buffer[3]) << 8);
+  xyz[0] = ((int16_t)buffer[4]) | (((int16_t)buffer[5]) << 8);
 
   return xyz;
 }
@@ -458,8 +415,7 @@ imu::Quaternion Adafruit_BNO055::getQuat() {
    * https://cdn-shop.adafruit.com/datasheets/BST_BNO055_DS000_12.pdf
    * 3.6.5.5 Orientation (Quaternion)
    */
-  const double scale = (1.0 / (1 << 14));
-  imu::Quaternion quat(scale * w, scale * x, scale * y, scale * z);
+  imu::Quaternion quat(w, x, y, z);
   return quat;
 }
 

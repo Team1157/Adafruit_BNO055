@@ -37,46 +37,46 @@ class Quaternion {
 public:
   Quaternion() : _w(1.0), _x(0.0), _y(0.0), _z(0.0) {}
 
-  Quaternion(double w, double x, double y, double z)
+  Quaternion(int16_t w, int16_t x, int16_t y, int16_t z)
       : _w(w), _x(x), _y(y), _z(z) {}
 
-  Quaternion(double w, Vector<3> vec)
+  Quaternion(int16_t w, Vector<3> vec)
       : _w(w), _x(vec.x()), _y(vec.y()), _z(vec.z()) {}
 
-  double &w() { return _w; }
-  double &x() { return _x; }
-  double &y() { return _y; }
-  double &z() { return _z; }
+  int16_t &w() { return _w; }
+  int16_t &x() { return _x; }
+  int16_t &y() { return _y; }
+  int16_t &z() { return _z; }
 
-  double w() const { return _w; }
-  double x() const { return _x; }
-  double y() const { return _y; }
-  double z() const { return _z; }
+  int16_t w() const { return _w; }
+  int16_t x() const { return _x; }
+  int16_t y() const { return _y; }
+  int16_t z() const { return _z; }
 
-  double magnitude() const {
+  int16_t magnitude() const {
     return sqrt(_w * _w + _x * _x + _y * _y + _z * _z);
   }
 
   void normalize() {
-    double mag = magnitude();
+    int16_t mag = magnitude();
     *this = this->scale(1 / mag);
   }
 
   Quaternion conjugate() const { return Quaternion(_w, -_x, -_y, -_z); }
 
-  void fromAxisAngle(const Vector<3> &axis, double theta) {
+  void fromAxisAngle(const Vector<3> &axis, int16_t theta) {
     _w = cos(theta / 2);
     // only need to calculate sine of half theta once
-    double sht = sin(theta / 2);
+    int16_t sht = sin(theta / 2);
     _x = axis.x() * sht;
     _y = axis.y() * sht;
     _z = axis.z() * sht;
   }
 
   void fromMatrix(const Matrix<3> &m) {
-    double tr = m.trace();
+    int16_t tr = m.trace();
 
-    double S;
+    int16_t S;
     if (tr > 0) {
       S = sqrt(tr + 1.0) * 2;
       _w = 0.25 * S;
@@ -104,8 +104,8 @@ public:
     }
   }
 
-  void toAxisAngle(Vector<3> &axis, double &angle) const {
-    double sqw = sqrt(1 - _w * _w);
+  void toAxisAngle(Vector<3> &axis, int16_t &angle) const {
+    int16_t sqw = sqrt(1 - _w * _w);
     if (sqw == 0) // it's a singularity and divide by zero, avoid
       return;
 
@@ -144,10 +144,10 @@ public:
   //
   Vector<3> toEuler() const {
     Vector<3> ret;
-    double sqw = _w * _w;
-    double sqx = _x * _x;
-    double sqy = _y * _y;
-    double sqz = _z * _z;
+    int16_t sqw = _w * _w;
+    int16_t sqx = _x * _x;
+    int16_t sqy = _y * _y;
+    int16_t sqz = _z * _z;
 
     ret.x() = atan2(2.0 * (_x * _y + _z * _w), (sqx - sqy - sqz + sqw));
     ret.y() = asin(-2.0 * (_x * _z - _y * _w) / (sqx + sqy + sqz + sqw));
@@ -156,7 +156,7 @@ public:
     return ret;
   }
 
-  Vector<3> toAngularVelocity(double dt) const {
+  Vector<3> toAngularVelocity(int16_t dt) const {
     Vector<3> ret;
     Quaternion one(1.0, 0.0, 0.0, 0.0);
     Quaternion delta = one - *this;
@@ -195,18 +195,18 @@ public:
     return Quaternion(_w - q._w, _x - q._x, _y - q._y, _z - q._z);
   }
 
-  Quaternion operator/(double scalar) const {
+  Quaternion operator/(int16_t scalar) const {
     return Quaternion(_w / scalar, _x / scalar, _y / scalar, _z / scalar);
   }
 
-  Quaternion operator*(double scalar) const { return scale(scalar); }
+  Quaternion operator*(int16_t scalar) const { return scale(scalar); }
 
-  Quaternion scale(double scalar) const {
+  Quaternion scale(int16_t scalar) const {
     return Quaternion(_w * scalar, _x * scalar, _y * scalar, _z * scalar);
   }
 
 private:
-  double _w, _x, _y, _z;
+  int16_t _w, _x, _y, _z;
 };
 
 } // namespace imu
