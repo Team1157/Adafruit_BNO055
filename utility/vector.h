@@ -32,28 +32,28 @@ namespace imu {
 
 template <uint8_t N> class Vector {
 public:
-  Vector() { memset(p_vec, 0, sizeof(double) * N); }
+  Vector() { memset(p_vec, 0, sizeof(uint16_t) * N); }
 
-  Vector(double a) {
-    memset(p_vec, 0, sizeof(double) * N);
+  Vector(uint16_t a) {
+    memset(p_vec, 0, sizeof(uint16_t) * N);
     p_vec[0] = a;
   }
 
-  Vector(double a, double b) {
-    memset(p_vec, 0, sizeof(double) * N);
+  Vector(uint16_t a, uint16_t b) {
+    memset(p_vec, 0, sizeof(uint16_t) * N);
     p_vec[0] = a;
     p_vec[1] = b;
   }
 
-  Vector(double a, double b, double c) {
-    memset(p_vec, 0, sizeof(double) * N);
+  Vector(uint16_t a, uint16_t b, uint16_t c) {
+    memset(p_vec, 0, sizeof(uint16_t) * N);
     p_vec[0] = a;
     p_vec[1] = b;
     p_vec[2] = c;
   }
 
-  Vector(double a, double b, double c, double d) {
-    memset(p_vec, 0, sizeof(double) * N);
+  Vector(uint16_t a, uint16_t b, uint16_t c, uint16_t d) {
+    memset(p_vec, 0, sizeof(uint16_t) * N);
     p_vec[0] = a;
     p_vec[1] = b;
     p_vec[2] = c;
@@ -69,8 +69,8 @@ public:
 
   uint8_t n() { return N; }
 
-  double magnitude() const {
-    double res = 0;
+  uint16_t magnitude() const {
+    uint16_t res = 0;
     for (int i = 0; i < N; i++)
       res += p_vec[i] * p_vec[i];
 
@@ -78,7 +78,7 @@ public:
   }
 
   void normalize() {
-    double mag = magnitude();
+    uint16_t mag = magnitude();
     if (isnan(mag) || mag == 0.0)
       return;
 
@@ -86,8 +86,8 @@ public:
       p_vec[i] /= mag;
   }
 
-  double dot(const Vector &v) const {
-    double ret = 0;
+  uint16_t dot(const Vector &v) const {
+    uint16_t ret = 0;
     for (int i = 0; i < N; i++)
       ret += p_vec[i] * v.p_vec[i];
 
@@ -101,7 +101,7 @@ public:
   // cross() with another value for N will result in a link error.
   Vector cross(const Vector &v) const;
 
-  Vector scale(double scalar) const {
+  Vector scale(uint16_t scalar) const {
     Vector ret;
     for (int i = 0; i < N; i++)
       ret.p_vec[i] = p_vec[i] * scalar;
@@ -121,13 +121,13 @@ public:
     return *this;
   }
 
-  double &operator[](int n) { return p_vec[n]; }
+  uint16_t &operator[](int n) { return p_vec[n]; }
 
-  double operator[](int n) const { return p_vec[n]; }
+  uint16_t operator[](int n) const { return p_vec[n]; }
 
-  double &operator()(int n) { return p_vec[n]; }
+  uint16_t &operator()(int n) { return p_vec[n]; }
 
-  double operator()(int n) const { return p_vec[n]; }
+  uint16_t operator()(int n) const { return p_vec[n]; }
 
   Vector operator+(const Vector &v) const {
     Vector ret;
@@ -143,9 +143,9 @@ public:
     return ret;
   }
 
-  Vector operator*(double scalar) const { return scale(scalar); }
+  Vector operator*(uint16_t scalar) const { return scale(scalar); }
 
-  Vector operator/(double scalar) const {
+  Vector operator/(uint16_t scalar) const {
     Vector ret;
     for (int i = 0; i < N; i++)
       ret.p_vec[i] = p_vec[i] / scalar;
@@ -162,15 +162,15 @@ public:
       p_vec[i] *= 0.01745329251; // pi/180
   }
 
-  double &x() { return p_vec[0]; }
-  double &y() { return p_vec[1]; }
-  double &z() { return p_vec[2]; }
-  double x() const { return p_vec[0]; }
-  double y() const { return p_vec[1]; }
-  double z() const { return p_vec[2]; }
+  uint16_t &x() { return p_vec[0]; }
+  uint16_t &y() { return p_vec[1]; }
+  uint16_t &z() { return p_vec[2]; }
+  uint16_t x() const { return p_vec[0]; }
+  uint16_t y() const { return p_vec[1]; }
+  uint16_t z() const { return p_vec[2]; }
 
 private:
-  double p_vec[N];
+  uint16_t p_vec[N];
 };
 
 template <> inline Vector<3> Vector<3>::cross(const Vector &v) const {
