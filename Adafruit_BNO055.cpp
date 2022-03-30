@@ -385,8 +385,8 @@ imu::Vector<3> Adafruit_BNO055::getVector(adafruit_vector_type_t vector_type) {
   readLen((adafruit_bno055_reg_t)vector_type, buffer, 6);
 
   xyz[0] = ((int16_t)buffer[0]) | (((int16_t)buffer[1]) << 8);
-  xyz[0] = ((int16_t)buffer[2]) | (((int16_t)buffer[3]) << 8);
-  xyz[0] = ((int16_t)buffer[4]) | (((int16_t)buffer[5]) << 8);
+  xyz[1] = ((int16_t)buffer[2]) | (((int16_t)buffer[3]) << 8);
+  xyz[2] = ((int16_t)buffer[4]) | (((int16_t)buffer[5]) << 8);
 
   return xyz;
 }

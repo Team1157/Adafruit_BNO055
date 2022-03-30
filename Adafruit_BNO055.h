@@ -313,9 +313,10 @@ public:
   void enterSuspendMode();
   void enterNormalMode();
 
+	bool readLen(adafruit_bno055_reg_t, byte *buffer, uint8_t len);
 private:
   byte read8(adafruit_bno055_reg_t);
-  bool readLen(adafruit_bno055_reg_t, byte *buffer, uint8_t len);
+  
   bool write8(adafruit_bno055_reg_t, byte value);
 
   Adafruit_I2CDevice *i2c_dev = NULL; ///< Pointer to I2C bus interface
